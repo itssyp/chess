@@ -17,7 +17,6 @@ bool rook::canMove(tile *t, std::vector<std::vector<tile>> tilesv){
     for (int i=_x; i>x ;i--) if(tilesv[_y][i].getPiece()) return false;
     for (int i=_y; i<y ;i++) if(tilesv[i][_x].getPiece()) return false;
     for (int i=_y; i>y ;i--) if(tilesv[i][_x].getPiece()) return false;
-    if ((y==_y || x==_x) && !t->getPiece())  return true;
     if ((y==_y || x==_x) && !t->getPiece()) return true;
     if ((y==_y || x==_x) && t->getPiece()->getWhite() && !_isWhite) return true;
     if ((y==_y || x==_x) && !t->getPiece()->getWhite() && _isWhite) return true;

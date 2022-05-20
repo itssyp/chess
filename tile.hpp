@@ -15,7 +15,6 @@ public:
     void handle(genv::event ev);
     piece *getPiece();
     bool setPiece(piece *p,std::vector<std::vector<tile>> tilesv);
-//    tile (&t)[8][8]
     int getx();
     int gety();
 };

@@ -2,33 +2,53 @@
 #include "pawn.hpp"
 #include "rook.hpp"
 #include "bishop.hpp"
+#include "queen.hpp"
+#include "knight.hpp"
+#include "king.hpp"
 #include "iostream"
 using namespace genv;
 
 chessboard::chessboard(yWindow *w,std::string name,int x, int y, int sx, int sy):Widget(w,name,x,y,sx,sy){
     for (int j=0; j<8; j++){
         for (int i=0; i<8; i++){
-            piece *p;
+            piece *p,*bk,*wk;
             p = nullptr;
             if (j==1) p = new pawn(false,i,j);
             if (j==6) p = new pawn(true,i,j);
             if ((j==0&&i==0) || (j==0&&i==7)) p = new rook(false,i,j);
             if ((j==7&&i==0) || (j==7&&i==7)) p = new rook(true,i,j);
-            if ((j==0&&i==1) || (j==0&&i==6)) p = new bishop(false,i,j);
-            if ((j==7&&i==1) || (j==7&&i==6)) p = new bishop(true,i,j);
+            if ((j==0&&i==2) || (j==0&&i==5)) p = new bishop(false,i,j);
+            if ((j==7&&i==2) || (j==7&&i==5)) p = new bishop(true,i,j);
+            if (j==0&&i==3) p = new queen(false,i,j);
+            if (j==7&&i==3) p = new queen(true,i,j);
+            if ((j==0&&i==1) || (j==0&&i==6)) p = new knight(false,i,j);
+            if ((j==7&&i==1) || (j==7&&i==6)) p = new knight(true,i,j);
+            if (j==0&&i==4){
+                p = new king(false,i,j);
+                bk = p;
+            }
+            if (j==7&&i==4){
+                p = new king(true,i,j);
+                wk = p;
+            }
+
             bool b=false;
             if ((j+i)%2==1) b= true;
-            tile tmp =tile(i*100,j*100,100,100,b,p,[i,j,this](tile &t){
-//                        std::cout<<j<<','<< i <<std::endl;
+            tile tmp =tile(i*100,j*100,100,100,b,p,[i,j,this,bk,wk](tile &t){
                         if (this->get_selectedPiece()==nullptr && t.getPiece()!=nullptr){
-//                            std::cout << "occupied" << std::endl;
-                            this->set_selectedPiece(t.getPiece());
-//                            t.getPiece()->getPos();
-                            t.setPiece(nullptr,this->getTiles());
+                            if (t.getPiece()->getWhite()==this->getonTurn()){
+                                this->set_selectedPiece(t.getPiece());
+                                t.setPiece(nullptr,this->getTiles());
+                                this->changeTurn();
+                            }
                         }
                         else if (this->get_selectedPiece()!=nullptr){
-//                            this->get_selectedPiece()->_move(t.);
+                            delete t.getPiece();
                             if (t.setPiece(this->get_selectedPiece(),this->getTiles())){
+                                inCheck(this->get_selectedPiece());
+
+//                                inCheck(wk);
+//                                inCheck(bk);
                                 this->set_selectedPiece(0);
                             }
                         }
@@ -62,6 +82,28 @@ void chessboard::set_selectedPiece(piece *p){
 
 piece *chessboard::get_selectedPiece(){
     return _selectedPiece;
+}
+
+bool chessboard::inCheck(piece *p){
+    tile *t = &tiles[p->getPosy()][p->getPosx()];
+    for(int j=0; j<8; j++){
+        for(int i=0; i<8; i++){
+            if (i!=p->getPosx()&& j!=p->getPosy() && tiles[j][i].getPiece() && tiles[j][i].getPiece()->getWhite()!= p->getWhite() && tiles[j][i].getPiece()->canMove(t, this->getTiles()) ){
+                std::cout << "check" << 1 <<std::endl;
+                return true;
+            }
+        }
+    }
+    std::cout << "check" << 0 <<std::endl;
+    return false;
+}
+
+bool chessboard::getonTurn(){
+    return onTurn;
+}
+
+void chessboard::changeTurn(){
+    onTurn=!onTurn;
 }
 
 std::vector<std::vector<tile>> chessboard::getTiles(){

@@ -19,9 +19,23 @@ bool bishop::canMove(tile *t, std::vector<std::vector<tile>> tilesv){
     if (tilesv[y][x].getPiece() && tilesv[y][x].getPiece()->getWhite() && getWhite()) return false;
     if (tilesv[y][x].getPiece() && !tilesv[y][x].getPiece()->getWhite() && !getWhite()) return false;
     for (int i=0; _y+i<y && _x+i<x; i++){
-        if(tilesv[_y+i][_x+i].getPiece() && tilesv[_y+i][_x+i].getPiece()->getWhite()==getWhite()) return false;
+        if(tilesv[_y+i][_x+i].getPiece()) return false;
         if(_y+i+1==y  && _x+i+1==x) return true;
     }
+    for (int i=0; _y+i<y && _x-i>x; i++){
+        if(tilesv[_y+i][_x-i].getPiece()) return false;
+        if(_y+i+1==y  && _x-i-1==x) return true;
+    }
+    for (int i=0; _y-i>y && _x-i>x; i++){
+        if(tilesv[_y-i][_x-i].getPiece()) return false;
+        if(_y-i-1==y  && _x-i-1==x) return true;
+    }
+    for (int i=0; _y-i>y && _x+i<x; i++){
+        if(tilesv[_y-i][_x+i].getPiece()) return false;
+        if(_y-i-1==y  && _x+i+1==x) return true;
+    }
+
+
 //    for (int i=0; _y+i<y ; i++){
 //        std::cout << _x-i << "," << _y+i << "  " << x<< ","<< y << std::endl;
 //        if(tilesv[_y+i][_x-i].getPiece() && tilesv[_y+i][_x-i].getPiece()->getWhite()==getWhite()) return false;

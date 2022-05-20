@@ -1,5 +1,4 @@
 #include "knight.hpp"
-#include <iostream>
 using namespace genv;
 
 knight::knight(bool w,int x, int y):piece(w,x,y){}
@@ -8,7 +7,7 @@ void knight::draw(int x, int y){
     if (_isWhite)
         gout<< move_to(x+25,y+25) << color(204,0,204) << box(50,50);
     else
-        gout<< move_to(x+25,y+25) << color(100,200,200) << box(50,50);
+        gout<< move_to(x+25,y+25) << color(0,255,255) << box(50,50);
 }
 
 bool knight::canMove(tile *t, std::vector<std::vector<tile>> tilesv){
@@ -28,3 +27,4 @@ bool knight::canMove(tile *t, std::vector<std::vector<tile>> tilesv){
 
     return false;
 }
+

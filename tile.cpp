@@ -23,9 +23,7 @@ void tile::handle(genv::event ev){
 
 bool tile::setPiece(piece *p,std::vector<std::vector<tile>> tilesv){
     if(p){
-        std::cout<< p->canMove(this,tilesv) << std::endl;
         if (p->canMove(this,tilesv)){
-//        std::cout<< _x/100 << "," << _y/100 << std::endl;
             p->setPos(_x/100,_y/100);
             _piece=p;            return true;
         }

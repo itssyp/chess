@@ -1,7 +1,11 @@
 #include "king.hpp"
+#include <iostream>
 using namespace genv;
 
 king::king(bool w,int x, int y):piece(w,x,y){}
+king::~king(){
+    std::cout<<"Game over";
+}
 
 void king::draw(int x, int y){
     if (_isWhite)
@@ -13,6 +17,8 @@ void king::draw(int x, int y){
 bool king::canMove(tile *t, std::vector<std::vector<tile>> tilesv){
     int x=t->getx()/100;
     int y=t->gety()/100;
+//    if ()
+//    std::cout <<inCheck(tilesv) << std::endl;
     if (x==_x && y==_y) return true;
     if (t->getPiece() && t->getPiece()->getWhite()==getWhite()) return false;
 
@@ -22,5 +28,19 @@ bool king::canMove(tile *t, std::vector<std::vector<tile>> tilesv){
         }
     }
 
+    return false;
+}
+
+bool king::inCheck(std::vector<std::vector<tile>> tilesv){
+    tile *t = &tilesv[_y][_x];
+    for(int j=0; j<8; j++){
+        for(int i=0; i<8; i++){
+            if (i!=_x && j!=_y && tilesv[j][i].getPiece() && tilesv[j][i].getPiece()->getWhite()!= getWhite() && tilesv[j][i].getPiece()->canMove(t, tilesv) ){
+                std::cout << "check" << 1 <<std::endl;
+                return true;
+            }
+        }
+    }
+    std::cout << "check" << 0 <<std::endl;
     return false;
 }

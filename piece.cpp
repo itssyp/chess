@@ -10,8 +10,15 @@ void piece::setPos(int x, int y){
     this->_y=y;
 }
 
-void piece::getPos(){
-    std::cout << _x << "," << _y << std::endl;
+std::pair<int,int> piece::getPos(){
+    return std::pair<int,int>(_x,_y);
+}
+
+int piece::getPosx(){
+    return _x;
+}
+int piece::getPosy(){
+    return _y;
 }
 
 bool piece::getWhite(){

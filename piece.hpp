@@ -12,7 +12,9 @@ public:
     virtual void draw(int x, int y) =0;
     virtual bool canMove(tile *t,std::vector<std::vector<tile>> tilesv) =0;
     void setPos(int x, int y);
-    void getPos();
+    std::pair<int,int> getPos();
+    int getPosx();
+    int getPosy();
     bool getWhite();
 };
 
